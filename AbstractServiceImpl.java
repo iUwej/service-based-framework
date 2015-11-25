@@ -6,6 +6,7 @@ public abstract class AbstractServiceImpl implements Service,Runnable{
 	protected boolean isIdle;
 	protected transient boolean isRunning;
 	protected String address;
+	protected String name;
 
 
 	abstract ProcessResult execute(ServiceTask task) throws ServiceTaskException;
@@ -41,6 +42,14 @@ public abstract class AbstractServiceImpl implements Service,Runnable{
 
 	public String getAddress(){
 		return address;
+	}
+
+	public String getName(){
+		return name;
+	}
+
+	public String toString(){
+		String.format("[%s@%s]",name,address);
 	}
 
 	 

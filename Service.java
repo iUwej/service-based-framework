@@ -6,4 +6,5 @@ interface Service{
 	void processTask(ServiceTask task);
 	boolean isIdle();
 	String getAddress();
+	String getName();
 }
