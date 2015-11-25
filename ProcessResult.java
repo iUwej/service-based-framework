@@ -1,5 +1,6 @@
+import java.io.Serializable;
 
-class ProcessResult<T implements Serializable> implements Serializable{
+class ProcessResult<T extends Serializable> implements Serializable{
 
 	private T data;
 

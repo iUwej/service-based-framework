@@ -1,7 +1,8 @@
+import java.util.concurrent.BlockingQueue;
 
-public abstract class AbstractServiceImpl implements ServiceTask,Runnable{
+public abstract class AbstractServiceImpl implements Service,Runnable{
 
-	protected final BlockingQueue<ServiceTask> queue;
+	protected  BlockingQueue<ServiceTask> queue;
 	protected boolean isIdle;
 	protected transient boolean isRunning;
 	protected String address;
@@ -26,7 +27,13 @@ public abstract class AbstractServiceImpl implements ServiceTask,Runnable{
 			throw new IllegalStateException("This service is no longer running");
 		}
 		else{
-			queue.put(task);
+			try{
+				queue.put(task);
+			}
+			catch(InterruptedException exe){
+				task.getCallback().onError(exe);
+			}
+			
 		}
 		
 
@@ -41,13 +48,16 @@ public abstract class AbstractServiceImpl implements ServiceTask,Runnable{
 	public void run(){
 
 		while(isRunning){
-
+				ServiceTask task=null;
 			try{
-				ServiceTask task=queue.take();
+				task=queue.take();
 				ProcessResult result=execute(task);
 				task.getCallback().onSuccess(result);
 
 
+			}
+			catch(InterruptedException exe){
+				task.getCallback().onError(exe);
 			}
 			catch(ServiceTaskException error){
 				task.getCallback().onError(error);

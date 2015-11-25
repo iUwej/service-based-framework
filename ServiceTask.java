@@ -1,5 +1,6 @@
+import java.io.Serializable;
 
-public class ServiceTask<T implements Serializable> implements Serializable{
+public class ServiceTask<T extends Serializable> implements Serializable{
 
 	private String serviceAddress;
 	private T data;
@@ -27,7 +28,7 @@ public class ServiceTask<T implements Serializable> implements Serializable{
 		this.callback=callback;
 	}
 
-	public void getCallBack(){
+	public ResultsCallback getCallback(){
 		return callback;
 	}
 
